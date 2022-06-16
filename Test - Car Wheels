@@ -1,7 +1,9 @@
 #include<AFMotor.h>
 
-AF_DCMotor motor(4);
-
+AF_DCMotor motorA(1);
+AF_DCMotor motorB(2);
+AF_DCMotor motorC(3);
+AF_DCMotor motorD(4);
 void setup() {
   // put your setup code here, to run once:
   
@@ -9,13 +11,36 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  motor.setSpeed(200);
-  motor.run(FORWARD);
+  motorA.setSpeed(200);
+  motorB.setSpeed(200);
+  motorC.setSpeed(200);
+  motorD.setSpeed(200);
+
+  motorA.run(FORWARD);
+  motorB.run(FORWARD);
+  motorC.run(FORWARD);
+  motorD.run(FORWARD);
+
   delay(2000);
-  motor.run(RELEASE);
+
+  motorA.run(RELEASE);
+  motorB.run(RELEASE);
+  motorC.run(RELEASE);
+  motorD.run(RELEASE);
+
   delay(1000);
-  motor.run(BACKWARD);
+
+  motorA.run(BACKWARD);
+  motorB.run(BACKWARD);
+  motorC.run(BACKWARD);
+  motorD.run(BACKWARD);
+
   delay(2000);
-  motor.run(RELEASE);
+
+  motorA.run(RELEASE);
+  motorB.run(RELEASE);
+  motorC.run(RELEASE);
+  motorD.run(RELEASE);
+  
   delay(1000);
 }
