@@ -1,0 +1,25 @@
+
+char in = 0;
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  Serial.begin(9600);
+  Serial.println("setup");
+  pinMode(LED_BUILTIN, OUTPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  Serial.println("loop");
+  delay(2000);
+  if(Serial.available()>0){
+    in = Serial.read();
+    Serial.println(in);
+
+    
+    if(in == '1')
+      digitalWrite(LED_BUILTIN, HIGH);
+    else if(in == '0')
+      digitalWrite(LED_BUILTIN, LOW);
+  }
+
+}
