@@ -1,0 +1,54 @@
+#include<AFMotor.h>
+
+AF_DCMotor motorA(1);
+AF_DCMotor motorB(2);
+AF_DCMotor motorC(3);
+AF_DCMotor motorD(4);
+
+int trigPin = 49;
+int echoPin = 40;
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  Serial.begin(9600);
+  Serial.println("setup");
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  Serial.println("loop");
+  delay(2000);
+
+  motorA.setSpeed(200);
+  motorB.setSpeed(200);
+  motorC.setSpeed(200);
+  motorD.setSpeed(200);
+
+  long duration, distance;
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(1000);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration/2)/29.1;
+  Serial.print(distance);
+  Serial.println("CM");
+  delay(10);
+
+  if(distance <= 10){
+    digitalWrite(LED_BUILTIN, HIGH);
+
+    motorA.run(RELEASE);
+    motorB.run(RELEASE);
+    motorC.run(RELEASE);
+    motorD.run(RELEASE);
+  }else if(distance > 10){
+    digitalWrite(LED_BUILTIN, LOW);
+    motorA.run(FORWARD);
+    motorB.run(FORWARD);
+    motorC.run(FORWARD);
+    motorD.run(FORWARD);
+  }
+
+}
