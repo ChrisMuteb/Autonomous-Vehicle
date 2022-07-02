@@ -1,0 +1,144 @@
+
+
+#include<AFMotor.h>
+
+AF_DCMotor motorA(1, MOTOR12_64KHZ);
+AF_DCMotor motorB(2, MOTOR12_64KHZ);
+AF_DCMotor motorC(3, MOTOR12_64KHZ);
+AF_DCMotor motorD(4, MOTOR12_64KHZ);
+
+int mtr_Spd = 250;
+String str = "";
+int blueToothVal = 0;
+
+int trigPin = 49;
+int echoPin = 40;
+bool flag = false;
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  Serial1.begin(9600);
+
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  long duration, distance;
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(1000);
+    digitalWrite(trigPin, LOW);
+    duration = pulseIn(echoPin, HIGH);
+    distance = (duration/2)/29.1;
+
+    Serial.print(distance);
+    Serial.println("CM");
+    delay(10);
+
+    if(distance <= 10){
+        Stop();
+    }
+    
+
+  while(Serial1.available()){
+    str = Serial1.readStringUntil('\n');
+
+    Serial.println(str);
+
+    blueToothVal = (str.toInt());
+    Serial.print("Bluetooth value ");
+    Serial.println(blueToothVal);
+    
+
+    switch(blueToothVal){
+      case 1:
+          Forward();
+        break;
+      case 2:
+        Reverse();
+        break;
+      case 3:
+        Left();
+        break;
+      case 4:
+       Right();
+       break;
+      case 5:
+        Stop();
+        break;
+
+    }
+    //ultraSonicSensorFunction();
+  }
+
+}
+
+void Forward(){
+  Serial.println("Forward");
+  motorA.setSpeed(mtr_Spd);
+  motorB.setSpeed(mtr_Spd);
+  motorC.setSpeed(mtr_Spd);
+  motorD.setSpeed(mtr_Spd);
+
+  motorA.run(FORWARD);
+  motorB.run(FORWARD);
+  motorC.run(FORWARD);
+  motorD.run(FORWARD);
+}
+
+void Reverse(){
+  Serial.println("Reverse");
+  motorA.setSpeed(mtr_Spd);
+  motorB.setSpeed(mtr_Spd);
+  motorC.setSpeed(mtr_Spd);
+  motorD.setSpeed(mtr_Spd);
+
+  motorA.run(BACKWARD);
+  motorB.run(BACKWARD);
+  motorC.run(BACKWARD);
+  motorD.run(BACKWARD);
+}
+
+void Left(){
+  Serial.println("Left");
+  motorA.setSpeed(mtr_Spd);
+  motorB.setSpeed(mtr_Spd);
+  motorC.setSpeed(mtr_Spd);
+  motorD.setSpeed(mtr_Spd);
+
+  motorA.run(RELEASE);                                                        
+  motorB.run(BACKWARD);
+  motorC.run(FORWARD);
+  motorD.run(FORWARD);
+
+  delay(1000);
+
+  Stop();
+}
+
+void Right(){
+  Serial.println("Right");
+  motorA.setSpeed(mtr_Spd);
+  motorB.setSpeed(mtr_Spd);
+  motorC.setSpeed(mtr_Spd);
+  motorD.setSpeed(mtr_Spd);
+
+  motorA.run(FORWARD);                                                        
+  motorB.run(BACKWARD);
+  motorC.run(BACKWARD);
+  motorD.run(RELEASE);
+
+  delay(1000);
+  Stop();
+}
+
+void Stop(){
+  Serial.println("Stop");
+  motorA.run(RELEASE);
+  motorB.run(RELEASE);
+  motorC.run(RELEASE);
+  motorD.run(RELEASE);
+}
